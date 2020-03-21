@@ -1,0 +1,23 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/parser.html?t=1"
+  },
+  "logoInfo": {
+    "title": "抖音链接解析工具",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [{
+    "title": "常规管理",
+    "icon": "fa fa-address-book",
+    "href": "",
+    "target": "_self",
+    "child": [{
+      "title": "解析器",
+      "href": "page/parser.html",
+      "icon": "fa fa-home",
+      "target": "_self"
+    }]
+  }]
+}
