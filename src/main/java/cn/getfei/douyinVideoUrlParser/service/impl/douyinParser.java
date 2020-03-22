@@ -16,6 +16,8 @@ import org.apache.http.protocol.HttpContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonObject;
@@ -29,16 +31,19 @@ import cn.hutool.http.HttpRequest;
 @Service
 public class douyinParser implements IParserService{
 
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Override
 	public List<Video> parse(List<Video> videos) {
-		List<Video> parsedVideos=new ArrayList<>();
+//		List<Video> parsedVideos=new ArrayList<>();
 		videos.stream().forEach(video->{
 			String srcUrl=video.getSrcUrl();
 			String urlProcess = urlProcess(srcUrl);
 	        String desUrl = dyDecode(urlProcess);
 	        video.setDesUrl(desUrl);
+	        logger.info("srcUrl="+srcUrl+",desUrl="+desUrl);
 		});
-		return parsedVideos;
+		return videos;
 	}
 	
 	private static final String DYAPI = "https://aweme.snssdk.com/web/api/v2/aweme/iteminfo/?item_ids=ITEM_IDS&dytk=DYTK";

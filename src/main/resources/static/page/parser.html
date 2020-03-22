@@ -48,11 +48,11 @@
     <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
-        layui.use(['form', 'layedit', 'laydate','jquery'], function () {
+        layui.use(['form', 'layedit', 'laydate', 'jquery'], function () {
             var form = layui.form,
                 layer = layui.layer,
                 layedit = layui.layedit,
-                $=layui.$,
+                $ = layui.$,
                 laydate = layui.laydate;
 
             //日期
@@ -91,18 +91,27 @@
 
             //监听提交
             form.on('submit()', function (data) {
-                // layer.alert(JSON.stringify(data.field), {
-                //     title: '最终的提交信息'
-                // })
+                layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                })
                 $.ajax({
                     type: "get",
                     url: "/parser",
-                    data: "str=" + data.field.urls,
+                    data: "str=" + escape(data.field.urls),
                     dataType: "json",
                     success: function (response) {
                         if (response.state == 200) {
-                            console.log("response.data="+response.data);
+                            console.log("response.data=" + response.data);
                             $("#desurl").text(response.data);
+                            // let urls = response.data.split("\n");
+                            //打包压缩
+                            // var zip = new JSZip();
+                            // $.each(urls, function (index, url) { 
+                            //      zip.file((index+1)+".mp4",
+                            // });
+                            // $.each(urls, function (indexInArray, url) { 
+                            //     downloadWithBlob(url);
+                            // });
                         } else {
                             layer.alert("请求失败！");
                         }
@@ -114,19 +123,30 @@
             //表单初始赋值
             form.val('example', {
                 "username": "贤心" // "name": "value"
-                    ,
+                ,
                 "password": "123456",
                 "interest": 1,
                 "like[write]": true //复选框选中状态
-                    ,
+                ,
                 "close": true //开关状态
-                    ,
+                ,
                 "sex": "女",
                 "desc": "我爱 layui"
             })
 
 
         });
+        function downloadWithBlob(url) {
+            fetch(url).then(res => res.blob().then(blob => {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(blob);
+                var filename = '1.mp4';
+                a.href = url;
+                a.download = filename;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }));
+        }
     </script>
 
 </body>
